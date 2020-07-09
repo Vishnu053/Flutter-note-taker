@@ -1,6 +1,8 @@
+import 'package:common/editor.dart';
+import 'package:common/styles/styles.dart';
 import 'package:common/widgets/single_card.dart';
-import 'package:common/widgets/title_label.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -12,58 +14,67 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
+  String greeting() {
+    var hour = DateTime.now().hour;
+    if (hour <= 12) {
+      return 'Good Morning';
+    } else if ((hour > 12) && (hour <= 16)) {
+      return 'Good Afternoon';
+    } else if ((hour > 16) && (hour < 20)) {
+      return 'Good Evening';
+    } else {
+      return 'Good Night';
+    }
+  }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  void _newNote() {
+    // Fluttertoast.showToast(
+    //   msg: "Type in a new note.",
+    //   toastLength: Toast.LENGTH_SHORT,
+    //   gravity: ToastGravity.BOTTOM,
+    //   timeInSecForIosWeb: 2,
+    // );
+    Navigator.pushNamed(context, 'NoteEditor');
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      // body: Center(
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     children: <Widget>[
-      //       Text(
-      //         'You have pushed the button this many times:',
-      //       ),
-      //       Text(
-      //         '$_counter',
-      //         style: Theme.of(context).textTheme.headline4,
-      //       ),
-      //     ],
-      //   ),
-      // ),
-      body: ListView(
-        shrinkWrap: true,
-        children: <Widget>[
-          TitleLabel(label: 'Trending'),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GridView.count(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              crossAxisCount: 2,
-              children: List.generate(8, (index) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: GridCard(),
-                );
-              }),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              expandedHeight: 250.0,
+              floating: true,
+              pinned: true,
+              snap: false,
+              elevation: 0,
+              backgroundColor: primaryColor,
+              flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: true,
+                  title: Text(greeting(),
+                      style: baseTextStyle.copyWith(color: Colors.white)),
+                  background: Image.network(
+                    'https://source.unsplash.com/random',
+                    fit: BoxFit.cover,
+                  )),
             ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+            SliverGrid(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                ),
+                delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                  return new GridCard();
+                })),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _newNote,
+          tooltip: 'New Note',
+          child: Icon(Icons.add),
+        ),
       ),
     );
   }
