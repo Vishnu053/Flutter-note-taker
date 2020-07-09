@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white,
         body: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
@@ -53,10 +53,12 @@ class _HomePageState extends State<HomePage> {
               backgroundColor: primaryColor,
               flexibleSpace: FlexibleSpaceBar(
                   centerTitle: true,
+                  // titlePadding:EdgeInsets.fromLTRB(0, 0, 0, 15),
                   title: Text(greeting(),
                       style: baseTextStyle.copyWith(color: Colors.white)),
                   background: Image.network(
-                    'https://source.unsplash.com/random',
+                    // 'https://source.unsplash.com/random',
+                    'https://images.unsplash.com/photo-1529641484336-ef35148bab06?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80',
                     fit: BoxFit.cover,
                   )),
             ),
