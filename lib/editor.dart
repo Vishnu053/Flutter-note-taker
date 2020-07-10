@@ -79,4 +79,28 @@ class _NoteEditorState extends State<NoteEditor> {
       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+	void showWaitDialog() {
+    showGeneralDialog(
+        context: context,
+        pageBuilder: (context, anim1, anim2) {},
+        barrierDismissible: true,
+        barrierColor: Colors.black.withOpacity(0.4),
+        barrierLabel: '',
+        transitionBuilder: (context, anim1, anim2, child) {
+          return Transform.scale(
+            scale: math.radians(anim1.value * 55),
+            child: Opacity(
+              opacity: anim1.value,
+              child: AlertDialog(
+                shape: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(8)),
+                title: Text('Hello!!'),
+                content: Text('How are you?'),
+              ),
+            ),
+          );
+        },
+        transitionDuration: Duration(milliseconds: 300));
+  }
 }
